@@ -1,0 +1,203 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+}
+
+.logo {
+  height: 50px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info span {
+  margin: 0 10px;
+}
+
+.user-info button {
+  padding: 5px 10px;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  background-color: #333;
+  padding: 10px 0;
+}
+
+.nav ul li {
+  margin: 0 20px;
+}
+
+.nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.loan-section {
+  text-align: center;
+  padding: 20px;
+  background-color: #e0e0e0;
+}
+
+.loan-section h1 {
+  margin: 0;
+}
+
+.buttons button {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.loan-form {
+  padding: 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.loan-form form {
+  display: grid;
+  gap: 15px;
+  align-items: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.loan-form button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 150px;
+  margin-top: 10px;
+}
+
+.emi-calculator {
+  padding: 20px;
+  text-align: center;
+  background-color: #e0e0e0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.toggle-buttons button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.financial-literacy {
+  padding: 20px;
+  text-align: center;
+  background-color: #f0f0f0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.financial-literacy h2 {
+  margin: 0 0 10px;
+}
+
+.financial-literacy h3 {
+  margin: 15px 0 5px;
+}
+
+.financial-literacy ul {
+  list-style: none;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.financial-literacy li {
+  margin: 10px 0;
+}
+
+.requirements {
+  padding: 20px;
+  text-align: center;
+}
+
+.req-box {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.req-box div {
+  background-color: #f0f0f0;
+  padding: 20px;
+  width: 30%;
+}
+
+.faq {
+  padding: 20px;
+  text-align: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+}
+
+.footer img {
+  height: 50px;
+}
