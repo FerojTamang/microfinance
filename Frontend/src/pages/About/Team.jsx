@@ -4,7 +4,7 @@ import "./Team.css"; // 👈 you'll create this file
 function Team() {
   const members = [
     {
-      name: "Sita Sharma",
+      name: "Feroj Tamang",
       position: "Chairperson",
       image:
         "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
