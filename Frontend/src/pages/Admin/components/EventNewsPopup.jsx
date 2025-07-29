@@ -16,7 +16,7 @@ const EventNewsPopup = () => {
       }
     }
   }, []);
-
+  
   useEffect(() => {
     try {
       localStorage.setItem('events', JSON.stringify(events));
@@ -166,6 +166,8 @@ const EventNewsPopup = () => {
                   Delete
                 </button>
               </div>
+
+              
             </div>
           </li>
         ))}

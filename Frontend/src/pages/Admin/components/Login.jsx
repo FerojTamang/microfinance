@@ -1,138 +1,120 @@
+// src/pages/Login.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Form from '../components/Form';
 
-const Login = ({ onLogin }) => {
-  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
-  const [registerForm, setRegisterForm] = useState({ username: '', password: '', confirmPassword: '' });
-  const [showRegister, setShowRegister] = useState(false);
+const Login = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Fixed credentials for now
-    if (loginForm.username === 'admin' && loginForm.password === 'admin') {
-      onLogin({ username: 'admin', password: 'admin' });
-      setLoginForm({ username: '', password: '' });
-    } else {
-      alert('Invalid credentials. Use username: admin, password: admin');
+  const handleLogin = async (formData) => {
+    console.log('=== LOGIN ATTEMPT STARTED ===');
+    console.log('Username:', formData.username);
+    console.log('Password length:', formData.password.length);
+    
+    setIsLoading(true);
+
+    try {
+      console.log('Sending login request to backend...');
+      
+      const response = await axios.post('http://localhost:3000/api/auth/login', {
+        username: formData.username,
+        password: formData.password
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000, // 10 second timeout
+      });
+
+      console.log('=== LOGIN RESPONSE RECEIVED ===');
+      console.log('Status Code:', response.status);
+      console.log('Response Data:', response.data);
+
+      // Check if login was successful
+      if (response.status === 200 && response.data) {
+        console.log('✅ LOGIN SUCCESSFUL');
+        console.log('User data:', response.data.user);
+        
+        // Optional: Store user info in localStorage for session management
+        if (response.data.user) {
+          localStorage.setItem('currentUser', JSON.stringify({
+            username: response.data.user.username,
+            loginTime: new Date().toISOString()
+          }));
+        }
+        
+        console.log('🚀 Navigating to admin panel...');
+        
+        // Navigate to admin page FIRST
+        navigate('/admin');
+        
+        console.log('✅ Navigation completed');
+        
+        // Show success message AFTER navigation (with a small delay)
+        setTimeout(() => {
+          alert(`🎉 Welcome back, ${formData.username}!\n\nLogin successful!`);
+        }, 100);
+        
+      } else {
+        console.warn('⚠️ Unexpected response format');
+        console.log('Response:', response);
+        alert('Login response was unexpected. Please try again.');
+        setIsLoading(false);
+      }
+
+    } catch (error) {
+      console.error('=== LOGIN ERROR ===');
+      console.error('Full error object:', error);
+      
+      setIsLoading(false);
+
+      if (error.response) {
+        // Server responded with an error status
+        console.error('❌ Server Error Response');
+        console.error('Status:', error.response.status);
+        console.error('Error Data:', error.response.data);
+        
+        const errorMessage = error.response.data?.error || error.response.data?.message || 'Login failed';
+        
+        if (error.response.status === 401) {
+          // Invalid credentials
+          console.log('❌ Invalid credentials provided');
+          alert(`❌ Login Failed\n\n❗ Invalid username or password\n\nPlease check your credentials and try again.\n\n💡 Make sure:\n• Username is spelled correctly\n• Password is correct\n• Account exists in database`);
+        } else if (error.response.status === 400) {
+          // Bad request (missing username/password)
+          console.log('❌ Bad request - missing data');
+          alert(`❌ Login Failed\n\n${errorMessage}\n\nPlease make sure both username and password are provided.`);
+        } else if (error.response.status === 500) {
+          // Server error
+          console.log('❌ Internal server error');
+          alert(`❌ Server Error\n\nSomething went wrong on our server.\n\nPlease try again later or contact support.\n\nError: ${errorMessage}`);
+        } else {
+          // Other server errors
+          console.log('❌ Other server error:', error.response.status);
+          alert(`❌ Login Failed\n\nServer Error (${error.response.status})\n\n${errorMessage}`);
+        }
+      } else if (error.request) {
+        // Network error - no response from server
+        console.error('❌ Network Error - No response received');
+        console.error('Request details:', error.request);
+        alert(`❌ Connection Error\n\n🔌 Cannot connect to the server\n\nPlease check:\n\n✓ Is your backend server running?\n✓ Is it running on http://localhost:3000?\n✓ Check your internet connection\n✓ Try refreshing the page\n\nIf the problem persists, contact support.`);
+      } else {
+        // Other unexpected errors
+        console.error('❌ Unexpected Error:', error.message);
+        alert(`❌ Unexpected Error\n\n${error.message}\n\nPlease try again or contact support if the problem persists.`);
+      }
     }
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    if (registerForm.password !== registerForm.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-    // For now, just switch back to login
-    setShowRegister(false);
-    setRegisterForm({ username: '', password: '', confirmPassword: '' });
-    alert('Registration successful! Please login with username: admin, password: admin');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">MicroFinance Admin</h1>
-          <p className="text-gray-600">{showRegister ? 'Create Account' : 'Welcome Back'}</p>
-        </div>
-        
-        {!showRegister ? (
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
-              <input
-                type="text"
-                value={loginForm.username}
-                onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter: admin"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-              <input
-                type="password"
-                value={loginForm.password}
-                onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter: admin"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              Sign In
-            </button>
-            <p className="text-center text-sm text-gray-600">
-              Don't have an account?{' '}
-              <button
-                type="button"
-                onClick={() => setShowRegister(true)}
-                className="text-blue-600 hover:underline font-medium"
-              >
-                Register here
-              </button>
-            </p>
-            <div className="text-center text-xs text-gray-500 mt-4 p-3 bg-gray-50 rounded-lg">
-              <p><strong>Demo Credentials:</strong></p>
-              <p>Username: <strong>admin</strong></p>
-              <p>Password: <strong>admin</strong></p>
-            </div>
-          </form>
-        ) : (
-          <form onSubmit={handleRegister} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
-              <input
-                type="text"
-                value={registerForm.username}
-                onChange={(e) => setRegisterForm({...registerForm, username: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-              <input
-                type="password"
-                value={registerForm.password}
-                onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-              <input
-                type="password"
-                value={registerForm.confirmPassword}
-                onChange={(e) => setRegisterForm({...registerForm, confirmPassword: e.target.value})}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              Register
-            </button>
-            <p className="text-center text-sm text-gray-600">
-              Already have an account?{' '}
-              <button
-                type="button"
-                onClick={() => setShowRegister(false)}
-                className="text-blue-600 hover:underline font-medium"
-              >
-                Sign in here
-              </button>
-            </p>
-          </form>
-        )}
-      </div>
+    <div>
+      <Form 
+        type="login" 
+        onSubmit={handleLogin} 
+        isLoading={isLoading}
+      />
     </div>
   );
 };

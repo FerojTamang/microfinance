@@ -12,25 +12,32 @@ import AdminDashboard from './components/AdminDashboard';
 import AboutUsEditor from './pages/Admin/components/AboutUsEditor';
 import FAQEditor from './pages/Admin/components/FAQEditor';
 
+// Import Register and Login pages
+import Register from './pages/Admin/components/Register';
+import Login from './pages/Admin/components/Login';
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
-
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About/>} />
-        <Route path='/services' element={<Services/>} />
-        <Route path='/notice' element={<Notice/>} />
-        <Route path='/membership' element={<Membership/>} />
-        <Route path='/contact-us' element={<Contact/>} />
-        <Route path='/admin' element={<Admin/>} />
-        <Route path='/useeffect' element={<UseEffect/>} />
-        <Route path='/d' element={<AdminDashboard/>} />
-        <Route path='/e' element={<AboutUsEditor/>} />
-        <Route path='/f' element={<FAQEditor/>} />
+        {/* Public routes with Navbar */}
+        <Route path='/' element={<><Navbar /><Home /></>} />
+        <Route path='/about' element={<><Navbar /><About /></>} />
+        <Route path='/services' element={<><Navbar /><Services /></>} />
+        <Route path='/notice' element={<><Navbar /><Notice /></>} />
+        <Route path='/membership' element={<><Navbar /><Membership /></>} />
+        <Route path='/contact-us' element={<><Navbar /><Contact /></>} />
+        <Route path='/useeffect' element={<><Navbar /><UseEffect /></>} />
         
+        {/* Admin routes without Navbar */}
+        <Route path='/admin' element={<Admin />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        
+        {/* Other admin routes */}
+        <Route path='/d' element={<AdminDashboard />} />
+        <Route path='/e' element={<AboutUsEditor />} />
+        <Route path='/f' element={<FAQEditor />} />
       </Routes>
     </BrowserRouter>
   );
