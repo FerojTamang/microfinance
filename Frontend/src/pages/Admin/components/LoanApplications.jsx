@@ -1,7 +1,7 @@
 import React from 'react';
-import { CheckCircle, X, Eye } from 'lucide-react';
+import { CheckCircle, X, Eye, Edit2 } from 'lucide-react';
 
-const LoanApplications = ({ loanForms, updateLoanStatus }) => {
+const LoanApplications = ({ loanForms, updateLoanStatus, setSelectedLoan, setSelectedLoanForEdit }) => {
   return (
     <div className="bg-white rounded-lg shadow">
       <div className="p-6 border-b">
@@ -12,9 +12,13 @@ const LoanApplications = ({ loanForms, updateLoanStatus }) => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loan Type</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tenure</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purpose</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Citizenship</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -24,9 +28,13 @@ const LoanApplications = ({ loanForms, updateLoanStatus }) => {
             {loanForms.map((form) => (
               <tr key={form.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{form.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹{form.amount.toLocaleString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.loanType}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">NPR {form.amount.toLocaleString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.tenure} months</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.purpose}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.phone}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.email}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.citizenshipNumber}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{form.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -43,19 +51,32 @@ const LoanApplications = ({ loanForms, updateLoanStatus }) => {
                       <button
                         onClick={() => updateLoanStatus(form.id, 'approved')}
                         className="text-green-600 hover:text-green-900 transition-colors"
+                        title="Approve"
                       >
                         <CheckCircle className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => updateLoanStatus(form.id, 'rejected')}
                         className="text-red-600 hover:text-red-900 transition-colors"
+                        title="Reject"
                       >
                         <X className="h-4 w-4" />
                       </button>
                     </>
                   )}
-                  <button className="text-blue-600 hover:text-blue-900 transition-colors">
+                  <button
+                    onClick={() => setSelectedLoan(form)}
+                    className="text-blue-600 hover:text-blue-900 transition-colors"
+                    title="View Details"
+                  >
                     <Eye className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setSelectedLoanForEdit(form)}
+                    className="text-yellow-600 hover:text-yellow-900 transition-colors"
+                    title="Edit"
+                  >
+                    <Edit2 className="h-4 w-4" />
                   </button>
                 </td>
               </tr>

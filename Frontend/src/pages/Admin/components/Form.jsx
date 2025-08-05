@@ -1,9 +1,9 @@
-// src/components/Form.jsx
 import React, { useState } from 'react';
 
 const Form = ({ type, onSubmit, isLoading }) => {
   const [formData, setFormData] = useState({
     username: '',
+    email: '',
     password: '',
     confirmPassword: ''
   });
@@ -15,7 +15,6 @@ const Form = ({ type, onSubmit, isLoading }) => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -29,6 +28,12 @@ const Form = ({ type, onSubmit, isLoading }) => {
 
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email must be valid';
     }
 
     if (!formData.password) {
@@ -58,9 +63,9 @@ const Form = ({ type, onSubmit, isLoading }) => {
       return;
     }
 
-    // Prepare data for API
     const apiData = {
       username: formData.username,
+      email: formData.email,
       password: formData.password
     };
 
@@ -71,13 +76,13 @@ const Form = ({ type, onSubmit, isLoading }) => {
   const resetForm = () => {
     setFormData({
       username: '',
+      email: '',
       password: '',
       confirmPassword: ''
     });
     setErrors({});
   };
 
-  // Reset form when type changes
   React.useEffect(() => {
     resetForm();
   }, [type]);
@@ -90,7 +95,6 @@ const Form = ({ type, onSubmit, isLoading }) => {
         </h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username Field */}
           <div>
             <input
               type="text"
@@ -103,12 +107,24 @@ const Form = ({ type, onSubmit, isLoading }) => {
               }`}
               disabled={isLoading}
             />
-            {errors.username && (
-              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
-            )}
+            {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
           </div>
 
-          {/* Password Field */}
+          <div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                errors.email ? 'border-red-500' : 'border-gray-300'
+              }`}
+              disabled={isLoading}
+            />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          </div>
+
           <div>
             <input
               type="password"
@@ -121,12 +137,9 @@ const Form = ({ type, onSubmit, isLoading }) => {
               }`}
               disabled={isLoading}
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-            )}
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
 
-          {/* Confirm Password Field (only for register) */}
           {type === 'register' && (
             <div>
               <input
@@ -140,13 +153,10 @@ const Form = ({ type, onSubmit, isLoading }) => {
                 }`}
                 disabled={isLoading}
               />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
-              )}
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isLoading}
@@ -170,7 +180,6 @@ const Form = ({ type, onSubmit, isLoading }) => {
           </button>
         </form>
 
-        {/* Navigation Links */}
         <div className="mt-6 text-center">
           {type === 'register' ? (
             <p className="text-gray-600">

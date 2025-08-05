@@ -1,40 +1,26 @@
+```css
+/* Reset default styles for notice-section */
 .notice-section {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
 }
 
-.notice-section h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.notice-list {
+/* Ensure notice-item cards have consistent spacing */
+.notice-item {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
-.notice-item {
-  background-color: white;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+/* Style for file preview images */
+.notice-item img {
+  max-width: 100%;
+  height: auto;
 }
 
-.notice-item h3 {
-  margin: 0 0 10px;
-  color: #333;
+/* Ensure responsiveness for smaller screens */
+@media (max-width: 640px) {
+  .notice-item {
+    padding: 1rem;
+  }
 }
-
-.notice-date {
-  font-size: 0.9em;
-  color: #666;
-  margin-bottom: 5px;
-}
-
-.notice-item p {
-  margin: 0;
-  line-height: 1.5;
-}
+```

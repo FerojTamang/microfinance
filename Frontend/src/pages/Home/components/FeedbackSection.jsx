@@ -12,78 +12,45 @@ function FeedbackSection() {
       return;
     }
 
-    // In a real app, here you'd send it to a backend
+    // Load existing feedback from localStorage
+    const existingFeedback = JSON.parse(localStorage.getItem("feedbackList") || "[]");
+    // Create new feedback entry
+    const newFeedback = {
+      id: Date.now(),
+      feedback,
+      name,
+      timestamp: new Date().toLocaleString(),
+    };
+    // Save updated feedback list to localStorage
+    localStorage.setItem("feedbackList", JSON.stringify([...existingFeedback, newFeedback]));
+    
     alert("Thank you for your feedback!");
     setFeedback("");
     setName("");
   };
 
   return (
-    <section style={{
-      padding: "3rem 1.5rem",
-      backgroundColor: "#f9f9f9",
-      borderRadius: "20px",
-      maxWidth: "800px",
-      margin: "3rem auto",
-      boxShadow: "0 10px 30px rgba(0,0,0,0.1)"
-    }}>
-      <h2 style={{
-        fontSize: "2rem",
-        fontWeight: "700",
-        textAlign: "center",
-        marginBottom: "1.5rem",
-        color: "#004d40"
-      }}>
+    <section className="p-6 sm:p-12 bg-gray-50 rounded-3xl max-w-2xl mx-auto my-12 shadow-lg">
+      <h2 className="text-3xl font-bold text-center mb-6 text-teal-900">
         We Value Your Feedback
       </h2>
-
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <textarea
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
           placeholder="Your feedback..."
-          style={{
-            padding: "1rem",
-            fontSize: "1rem",
-            borderRadius: "12px",
-            border: "1px solid #ccc",
-            resize: "vertical",
-            minHeight: "120px",
-            background: "#fff",
-            outlineColor: "#00796b"
-          }}
+          className="p-4 text-base rounded-xl border border-gray-300 min-h-[120px] bg-white focus:outline-none focus:ring-2 focus:ring-teal-600 resize-y"
         />
-
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your Name (optional)"
-          style={{
-            padding: "0.75rem 1rem",
-            fontSize: "1rem",
-            borderRadius: "12px",
-            border: "1px solid #ccc",
-            background: "#fff",
-            outlineColor: "#00796b"
-          }}
+          className="p-3 text-base rounded-xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600"
         />
-
         <button
           type="submit"
-          style={{
-            padding: "0.75rem 2rem",
-            backgroundColor: "#00796b",
-            color: "white",
-            fontWeight: "600",
-            border: "none",
-            borderRadius: "30px",
-            cursor: "pointer",
-            alignSelf: "flex-start",
-            transition: "background-color 0.3s"
-          }}
-          onMouseOver={(e) => e.target.style.backgroundColor = "#004d40"}
-          onMouseOut={(e) => e.target.style.backgroundColor = "#00796b"}
+          className="px-6 py-3 bg-teal-600 text-white font-semibold rounded-full self-start hover:bg-teal-800 transition-colors"
         >
           Submit
         </button>

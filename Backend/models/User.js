@@ -11,6 +11,12 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: { isEmail: true },
+  },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -19,10 +25,5 @@ const User = sequelize.define('User', {
   tableName: 'users',
   timestamps: true,
 });
-//begineer mistake here , true rakheu vane chai harek choti hunxa migrate true garni vaneko change garni bela matrai true garni ho natra false rakhera chodni ho hamle yo mathi column name haru change garda kheri
-
-User.sync({ alter : true })
-  .then(() => console.log('User table synced successfully'))
-  .catch(err => console.error('Error syncing User table:', err));
 
 module.exports = User;
